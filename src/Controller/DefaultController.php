@@ -19,11 +19,127 @@ class DefaultController extends AbstractController
         $cnn = $this->cnnNews();
         $tv5 = $this->tv5News();
 
+        $latest_date = null;
+        $all_news = [];
+
+        foreach ($sunstar as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        $all_news[] = $news;
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+        foreach ($tv5 as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+        foreach ($abs as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+        foreach ($cnn as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+
         return $this->render('base.html.twig',[
-            'sunstar' => $sunstar,
-            'abs' => $abs,
-            'cnn' => $cnn,
-            'tv5' => $tv5
+            'all_news' => $all_news
         ]);
     }
 
@@ -44,7 +160,10 @@ class DefaultController extends AbstractController
                 $return[] = [
                     'datetime' => $data[0],
                     'title' => $data[1],
-                    'href' => $data[2]
+                    'href' => $data[2],
+                    'img' => 'images/sunstar.png',
+                    'name' => 'Sunstar Philippines',
+                    'website' => 'www.sunstar.com.ph',
                 ];
             }
         }
@@ -71,9 +190,12 @@ class DefaultController extends AbstractController
 
             if (isset($data[1])) {
                 $return[] = [
-                    'datetime' => $datetime->format('M j Y'),
+                    'datetime' => $datetime->format('F j Y'),
                     'title' => $data[1],
-                    'href' => $data[2]
+                    'href' => $data[2],
+                    'img' => 'images/abs.jpg',
+                    'name' => 'ABS-CBN News',
+                    'website' => 'news.abs-cbn.com',
                 ];
             }
         }
@@ -95,10 +217,19 @@ class DefaultController extends AbstractController
             $data = explode(",", $news);
 
             if (isset($data[1])) {
+                $datetime = $data[1];
+                $datetime = preg_replace('/^.*news\//', '', $datetime);
+                $datetime = preg_replace('/^.*regional\//', '', $datetime);
+                $datetime = preg_replace('/\/\D.*$/', '', $datetime);
+                $datetime = \DateTime::createFromFormat('Y/n/j', $datetime);
+
                 $return[] = [
-                    'datetime' => '',
+                    'datetime' => $datetime->format('F j Y'),
                     'title' => $data[0],
-                    'href' => $data[1]
+                    'href' => $data[1],
+                    'img' => 'images/cnn.png',
+                    'name' => 'CNN Philippines',
+                    'website' => 'cnnphilippines.com',
                 ];
             }
         }
@@ -120,12 +251,16 @@ class DefaultController extends AbstractController
             $data = explode(",", $news);
             $datetime = $data[0];
             $datetime = preg_replace("/ \d\d:.*$/", "", $datetime);
+            $datetime = preg_replace("/\s+$/", "", $datetime);
 
             if (isset($data[1])) {
                 $return[] = [
                     'datetime' => $datetime,
                     'title' => $data[1],
-                    'href' => $data[2]
+                    'href' => $data[2],
+                    'img' => 'images/tv5.png',
+                    'name' => 'tv5 News5',
+                    'website' => 'news.tv5.com.ph',
                 ];
             }
         }

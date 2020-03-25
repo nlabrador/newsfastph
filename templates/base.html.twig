@@ -116,91 +116,19 @@
             </p>
           </div>
               
-        {% for news in sunstar %}
+        {% for news in all_news %}
         <div class="row">
             <div class="col-md-12">
             <div class="author-box" data-aos="fade-left">
               <div class="d-flex mb-4">
                 <div class="mr-3">
-                  <img src="images/sunstar.png" alt="Image" class="img-fluid rounded-circle">
+                  <img src="{{ news.img }}" alt="Image" class="img-fluid rounded-circle">
                 </div>
                 <div class="mr-auto text-black">
-                  <strong class="font-weight-bold mb-0">Sunstar Philippines</strong>
+                  <strong class="font-weight-bold mb-0">{{ news.name }}</strong>
                   <i><small>&nbsp; {{ news.datetime }}</small></i>
                   <br>
-                  www.sunstar.com.ph
-                </div>
-              </div>
-              <blockquote>
-                <a href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
-              </blockquote>
-            </div>
-            </div>
-        </div>
-        <br>
-        {% endfor %}
-
-        {% for news in tv5 %}
-        <div class="row">
-            <div class="col-md-12">
-            <div class="author-box" data-aos="fade-left">
-              <div class="d-flex mb-4">
-                <div class="mr-3">
-                  <img src="images/tv5.png" alt="Image" class="img-fluid rounded-circle">
-                </div>
-                <div class="mr-auto text-black">
-                  <strong class="font-weight-bold mb-0">tv5 News5</strong>
-                  <i><small>&nbsp; {{ news.datetime }}</small></i>
-                  <br>
-                  news.tv5.com.ph
-                </div>
-              </div>
-              <blockquote>
-                <a href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
-              </blockquote>
-            </div>
-            </div>
-        </div>
-        <br>
-        {% endfor %}
-
-        {% for news in abs %}
-        <div class="row">
-            <div class="col-md-12">
-            <div class="author-box" data-aos="fade-left">
-              <div class="d-flex mb-4">
-                <div class="mr-3">
-                  <img src="images/abs.jpg" alt="Image" class="img-fluid rounded-circle">
-                </div>
-                <div class="mr-auto text-black">
-                  <strong class="font-weight-bold mb-0">ABS-CBN News</strong>
-                  <i><small>&nbsp; {{ news.datetime }}</small></i>
-                  <br>
-                  news.abs-cbn.com
-                </div>
-              </div>
-              <blockquote>
-                <a href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
-              </blockquote>
-            </div>
-            </div>
-        </div>
-        <br>
-        {% endfor %}
-
-        {% for news in cnn %}
-        <div class="row">
-            <div class="col-md-12">
-            <div class="author-box" data-aos="fade-left">
-              <div class="d-flex mb-4">
-                <div class="mr-3">
-                  <img src="images/cnn.png" alt="Image" class="img-fluid rounded-circle">
-                </div>
-                <div class="mr-auto text-black">
-                  <strong class="font-weight-bold mb-0">CNN Philippines</strong>
-                  <i><small>&nbsp; {{ news.datetime }}</small></i>
-                  <br>
-                  cnnphilippines.com 
+                  {{ news.website }}
                 </div>
               </div>
               <blockquote>
