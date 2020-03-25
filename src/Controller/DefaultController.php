@@ -278,12 +278,21 @@ class DefaultController extends AbstractController
         $data = explode(",", $csv);
 
         if (isset($data[0])) {
-            return [
-                'date' => $data[0],
-                'confirmed' => $data[1],
-                'negative' => $data[2],
-                'pending' => $data[3]
-            ];
+            if ($data[0] == 'image') {
+                $csv = preg_replace("/image,/","",$csv);
+                return [
+                    'image' => $csv
+                ];
+            }
+            else {
+                return [
+                    'image' => null,
+                    'date' => $data[0],
+                    'confirmed' => $data[1],
+                    'negative' => $data[2],
+                    'pending' => $data[3]
+                ];
+            }
         }
     }
 

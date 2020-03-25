@@ -101,6 +101,14 @@
                 </p>
 
                 <div class="row">
+                    {% if doh.image %}
+                    <div class="col-md-12">
+                        COVID-19 Update from <a href="https://www.doh.gov.ph" target="_blank">Department of Health</a><br>
+                    </div>
+                    <div class="col-md-12">
+                        <img src="{{ doh.image }}" width="80%">
+                    </div>
+                    {% else %}
                     <div class="col-md-12">
                         COVID-19 Update from <a href="https://www.doh.gov.ph" target="_blank">Department of Health</a><br>
                         {{ doh.date }}
@@ -141,6 +149,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                   <a href="/" class="btn btn-primary mr-2 mb-2">Refresh Feed</a>
                 </div>
                 <div>
