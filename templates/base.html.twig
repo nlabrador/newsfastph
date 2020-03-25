@@ -99,11 +99,51 @@
                 <p class="mb-5">
                     All news from legitimate media sources such as Sunstar Philippines, ABS-CBN News, tv5 News5, and CNN Philippines.
                 </p>
-                <p class="mb-5">
-                    We will soon include updates from DOH Philippines.
-                </p>
-                <div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        COVID-19 Update from <a href="https://www.doh.gov.ph" target="_blank">Department of Health</a><br>
+                        {{ doh.date }}
+                    </div>
+                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
+                        <div class="unit-4 d-block">
+                            <div>
+                                <a href="https://www.doh.gov.ph" target="_blank">
+                                <h3>{{ doh.confirmed }}</h3>
+                                <p>
+                                    Confirmed cases
+                                </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
+                        <div class="unit-4 d-block">
+                            <div>
+                                <a href="https://www.doh.gov.ph" target="_blank">
+                                <h3>{{ doh.negative }}</h3>
+                                <p>
+                                    Tested negative
+                                </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
+                        <div class="unit-4 d-block">
+                            <div>
+                                <a href="https://www.doh.gov.ph" target="_blank">
+                                <h3>{{ doh.pending }}</h3>
+                                <p>
+                                    Pending result
+                                </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                   <a href="/" class="btn btn-primary mr-2 mb-2">Refresh Feed</a>
+                </div>
+                <div>
                 </div>
               </div>
 

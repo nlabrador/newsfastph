@@ -139,7 +139,8 @@ class DefaultController extends AbstractController
         }
 
         return $this->render('base.html.twig',[
-            'all_news' => $all_news
+            'all_news' => $all_news,
+            'doh' => $this->dohUpdate()
         ]);
     }
 
@@ -268,7 +269,25 @@ class DefaultController extends AbstractController
         return $return;
     }
 
+    private function dohUpdate() {
+        if (!file_exists($this->getFileDir().'doh.csv')) {
+            return null;
+        }
+
+        $csv = file_get_contents($this->getFileDir().'doh.csv');
+        $data = explode(",", $csv);
+
+        if (isset($data[0])) {
+            return [
+                'date' => $data[0],
+                'confirmed' => $data[1],
+                'negative' => $data[2],
+                'pending' => $data[3]
+            ];
+        }
+    }
+
     private function getFileDir() {
-        return '/Users/nlabrador/newslab/csvs/';
+        return '/Users/nlabrador/newslab2/csvs/';
     }
 }
