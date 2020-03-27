@@ -188,11 +188,13 @@ class DefaultController extends AbstractController
             $datetime = preg_replace("/\+.*$/", "", $datetime);
             $datetime = preg_replace("/T/", " ", $datetime);
             $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', $datetime);
+	    $title = $data[1];
+	    $title =  preg_replace("/827 dead:/", ", 827 dead:", $title);
 
             if (isset($data[1])) {
                 $return[] = [
                     'datetime' => $datetime->format('F j Y'),
-                    'title' => $data[1],
+                    'title' => $title,
                     'href' => $data[2],
                     'img' => 'images/abs.jpg',
                     'name' => 'ABS-CBN News',
@@ -221,11 +223,12 @@ class DefaultController extends AbstractController
                 $datetime = $data[1];
                 $datetime = preg_replace('/^.*news\//', '', $datetime);
                 $datetime = preg_replace('/^.*regional\//', '', $datetime);
+                $datetime = preg_replace('/^.*lifestyle\//', '', $datetime);
                 $datetime = preg_replace('/\/\D.*$/', '', $datetime);
                 $datetime = \DateTime::createFromFormat('Y/n/j', $datetime);
 
                 $return[] = [
-                    'datetime' => $datetime->format('F j Y'),
+                    'datetime' => $datetime ? $datetime->format('F j Y') : null,
                     'title' => $data[0],
                     'href' => $data[1],
                     'img' => 'images/cnn.png',
@@ -297,6 +300,6 @@ class DefaultController extends AbstractController
     }
 
     private function getFileDir() {
-        return '/Users/nlabrador/newslab2/csvs/';
+	return '/home/ubuntu/newslab/csvs/';
     }
 }
