@@ -71,7 +71,7 @@
 
           <div class="col-12 col-md-9 col-xl-8 main-menu">
             <nav class="site-navigation position-relative text-right" role="navigation">
-
+                <a href='/' class="btn btn-primary">Refresh Feeds</a>
             </nav>
           </div>
 
@@ -101,18 +101,42 @@
                 </p>
 
                 <div class="row">
+                    <div class="col-md-12">
+                        COVID-19 Update from <a href="https://ncovtracker.doh.gov.ph/" target="_blank">Department of Health COVID-19 Tracker</a><br>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Residency</th>
+                                    <th>Confirmed Cases</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for track in tracker %}
+                                    <tr>
+                                        <td>{{ track.residence }}</td>
+                                        <td>
+                                            {% if track.residence == 'For validation' %}
+                                                <h5><span class="badge badge-info">{{ track.count }}</span></h5>
+                                            {% else %}
+                                                {% if track.count > 5 %}
+                                                    <h5><span class="badge badge-danger">{{ track.count }}</span></h5>
+                                                {% else %}
+                                                    <h5><span class="badge badge-warning">{{ track.count }}</span></h5>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {% if doh.image %}
                     <div class="col-md-12">
-                        COVID-19 Update from <a href="https://www.doh.gov.ph" target="_blank">Department of Health</a><br>
-                    </div>
-                    <div class="col-md-12">
-                        <img src="{{ doh.image }}" width="80%">
+                        <img src="{{ doh.image }}" width="90%">
                     </div>
                     {% else %}
-                    <div class="col-md-12">
-                        COVID-19 Update from <a href="https://www.doh.gov.ph" target="_blank">Department of Health</a><br>
-                        {{ doh.date }}
-                    </div>
                     <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
                         <div class="unit-4 d-block">
                             <div>
@@ -150,7 +174,8 @@
                         </div>
                     </div>
                     {% endif %}
-                  <a href="/" class="btn btn-primary mr-2 mb-2">Refresh Feed</a>
+
+
                 </div>
                 <div>
                 </div>

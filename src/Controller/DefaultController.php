@@ -18,6 +18,7 @@ class DefaultController extends AbstractController
         $abs = $this->absNews();
         $cnn = $this->cnnNews();
         $tv5 = $this->tv5News();
+        $tracker = $this->trackerByLocation();
 
         $latest_date = null;
         $all_news = [];
@@ -140,7 +141,8 @@ class DefaultController extends AbstractController
 
         return $this->render('base.html.twig',[
             'all_news' => $all_news,
-            'doh' => $this->dohUpdate()
+            'doh' => $this->dohUpdate(),
+            'tracker' => $tracker
         ]);
     }
 
@@ -297,6 +299,31 @@ class DefaultController extends AbstractController
                 ];
             }
         }
+    }
+
+    private function trackerByLocation() {
+        $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/PH_masterlist/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&groupByFieldsForStatistics=residence&orderByFields=value%20desc&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22FID%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&outSR=102100&cacheHint=true'; 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        $result=curl_exec($ch);
+        curl_close($ch);
+
+        $json = json_decode($result, true);
+
+        $return = [];
+        foreach ($json['features'] as $data) {
+            $att = $data['attributes'];
+            $count = $att['value'];
+            $residence = $att['residence'];
+
+            $return[] = [
+                'residence' => $residence,
+                'count' => $count
+            ];
+        }
+
+        return $return;
     }
 
     private function getFileDir() {
