@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
  
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -103,10 +104,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         COVID-19 Update from <a href="https://ncovtracker.doh.gov.ph/" target="_blank">Department of Health COVID-19 Tracker</a><br>
-			Total Confirmed Cases: {{ total }}<br>
+                        <br>
+			<strong style="color:#000">Total Confirmed Cases: {{ total }}</strong><br>
                     </div>
                     <div class="col-md-12">
-                        <table class="table">
+                        <table id="myTable" class="table" style="font-size:15px;width:100%">
                             <thead>
                                 <tr>
                                     <th>Residency</th>
@@ -119,12 +121,12 @@
                                         <td>{{ track.residence }}</td>
                                         <td>
                                             {% if track.residence == 'For validation' %}
-                                                <h5><span class="badge badge-info">{{ track.count }}</span></h5>
+                                                <span class="badge badge-pill badge-info">{{ track.count }}</span>
                                             {% else %}
                                                 {% if track.count > 5 %}
-                                                    <h5><span class="badge badge-danger">{{ track.count }}</span></h5>
+                                                    <span class="badge badge-pill badge-danger">{{ track.count }}</span>
                                                 {% else %}
-                                                    <h5><span class="badge badge-warning">{{ track.count }}</span></h5>
+                                                    <span class="badge badge-pill badge-warning">{{ track.count }}</span>
                                                 {% endif %}
                                             {% endif %}
                                         </td>
@@ -135,10 +137,14 @@
                     </div>
                     {% if doh.image %}
                     <div class="col-md-12">
-                        <img src="{{ doh.image }}" width="90%">
+                        <br>
+                        <br>
+                        <img src="{{ doh.image }}" width="100%">
                     </div>
                     {% else %}
                     <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
+                        <br>
+                        <br>
                         <div class="unit-4 d-block">
                             <div>
                                 <a href="https://www.doh.gov.ph" target="_blank">
@@ -251,9 +257,20 @@
   <script src="js/aos.js"></script>
   <script src="js/jquery.fancybox.min.js"></script>
   <script src="js/jquery.sticky.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
   
   <script src="js/main.js"></script>
+
+  <script>
+    $(document).ready( function () {
+        $('#myTable').DataTable({
+            "order": [[ 1, "desc" ]],
+            "iDisplayLength": 100
+        });
+    } );
+  </script>
   
   </body>
 </html>
