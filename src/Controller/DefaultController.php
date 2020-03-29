@@ -142,8 +142,13 @@ class DefaultController extends AbstractController
         return $this->render('base.html.twig',[
             'all_news' => $all_news,
             'doh' => $this->dohUpdate(),
-	    'tracker' => $tracker['return'],
-	    'total' => $tracker['total']
+	        'tracker' => $tracker['return'],
+	        'total' => $tracker['total'],
+	        'confirmed' => $this->trackerConfirmed(),
+	        'puis' => $this->trackerPUI(),
+	        'pums' => $this->trackerPUM(),
+	        'recovered' => $this->trackerRecovered(),
+	        'deaths' => $this->trackerDeaths(),
         ]);
     }
 
@@ -336,6 +341,106 @@ class DefaultController extends AbstractController
 	catch (Exception $e) {
 	    return [];
 	}
+    }
+
+    private function trackerConfirmed() {
+        try {
+            $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/slide_fig/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22confirmed%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+            $result=curl_exec($ch);
+            curl_close($ch);
+
+            $json = json_decode($result, true);
+
+            if (isset($json['features'])) {
+                return $json['features'][0]['attributes']['value'];
+            }
+        }
+        catch (Exception $e) {
+            return '';
+        }
+    }
+
+    private function trackerPUI() {
+        try {
+            $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/slide_fig/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22PUIs%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+            $result=curl_exec($ch);
+            curl_close($ch);
+
+            $json = json_decode($result, true);
+
+            if (isset($json['features'])) {
+                return $json['features'][0]['attributes']['value'];
+            }
+        }
+        catch (Exception $e) {
+            return '';
+        }
+    }
+
+    private function trackerPUM() {
+        try {
+            $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/slide_fig/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22PUMs%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+            $result=curl_exec($ch);
+            curl_close($ch);
+
+            $json = json_decode($result, true);
+
+            if (isset($json['features'])) {
+                return $json['features'][0]['attributes']['value'];
+            }
+        }
+        catch (Exception $e) {
+            return '';
+        }
+    }
+
+    private function trackerRecovered() {
+        try {
+            $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/slide_fig/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=[{%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22recovered%22%2C%22outStatisticFieldName%22%3A%22value%22}]&cacheHint=true';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+            $result=curl_exec($ch);
+            curl_close($ch);
+
+            $json = json_decode($result, true);
+
+            if (isset($json['features'])) {
+                return $json['features'][0]['attributes']['value'];
+            }
+        }
+        catch (Exception $e) {
+            return '';
+        }
+    }
+
+    private function trackerDeaths() {
+        try {
+            $url = 'https://services5.arcgis.com/mnYJ21GiFTR97WFg/arcgis/rest/services/slide_fig/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22deaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL,$url);
+            $result=curl_exec($ch);
+            curl_close($ch);
+
+            $json = json_decode($result, true);
+
+            if (isset($json['features'])) {
+                return $json['features'][0]['attributes']['value'];
+            }
+        }
+        catch (Exception $e) {
+            return '';
+        }
     }
 
     private function getFileDir() {
