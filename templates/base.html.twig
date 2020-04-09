@@ -141,36 +141,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-12">
-                        <br>
-			            <strong style="color:#000">Total Confirmed Cases By Residency: {{ total }}</strong><br>
-                        <table id="myTable" class="table" style="font-size:15px;width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Residency</th>
-                                    <th>Confirmed Cases</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for track in tracker %}
-                                    <tr>
-                                        <td>{{ track.residence }}</td>
-                                        <td>
-                                            {% if track.residence == 'For validation' %}
-                                                <span class="badge badge-pill badge-info">{{ track.count }}</span>
-                                            {% else %}
-                                                {% if track.count > 5 %}
-                                                    <span class="badge badge-pill badge-danger">{{ track.count }}</span>
-                                                {% else %}
-                                                    <span class="badge badge-pill badge-warning">{{ track.count }}</span>
-                                                {% endif %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
                     {% if doh.image %}
                     {% else %}
                     <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
@@ -271,6 +241,38 @@
 
           </div>
         </div>
+        <div class="row">
+                    <div class="col-md-12">
+                        <br>
+			            <strong style="color:#000">Total Confirmed COVID-19 Cases By Residency: {{ total }}</strong><br>
+                        <table id="myTable" class="table" style="font-size:15px;width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Residency</th>
+                                    <th>Confirmed Cases</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for track in tracker %}
+                                    <tr>
+                                        <td>{{ track.residence }}</td>
+                                        <td>
+                                            {% if track.residence == 'For validation' %}
+                                                <span class="badge badge-pill badge-info">{{ track.count }}</span>
+                                            {% else %}
+                                                {% if track.count > 5 %}
+                                                    <span class="badge badge-pill badge-danger">{{ track.count }}</span>
+                                                {% else %}
+                                                    <span class="badge badge-pill badge-warning">{{ track.count }}</span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
       </div>
 
     <div class="footer py-5 text-center">
