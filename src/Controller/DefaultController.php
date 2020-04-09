@@ -14,9 +14,11 @@ class DefaultController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $sunstar = $this->sunstarNews();
+        $newsId = $request->query->get('news');
+        $newsId = $newsId ? $newsId : 0;
         $abs = $this->absNews();
         $cnn = $this->cnnNews();
+        $sunstar = $this->sunstarNews();
         $tv5 = $this->tv5News();
         $tracker = $this->trackerByLocation();
 
@@ -139,8 +141,13 @@ class DefaultController extends AbstractController
             }
         }
 
+        if ($newsId > (count($all_news) - 1)) {
+            $newsId = 0;
+        }
+
         return $this->render('base.html.twig',[
-            'all_news' => $all_news,
+            'news' => isset($all_news[$newsId]) ? $all_news[$newsId] : null,
+            'id' => $newsId,
             'doh' => $this->dohUpdate(),
 	        'tracker' => $tracker['return'],
 	        'total' => $tracker['total'],
@@ -172,6 +179,9 @@ class DefaultController extends AbstractController
                     'href' => $data[2],
                     'img' => 'images/sunstar.png',
                     'name' => 'Sunstar Philippines',
+                    'video' => '',
+                    'content' => $data[4],
+                    'artImg' => $data[5],
                     'website' => 'www.sunstar.com.ph',
                 ];
             }
@@ -206,6 +216,9 @@ class DefaultController extends AbstractController
                     'href' => $data[2],
                     'img' => 'images/abs.jpg',
                     'name' => 'ABS-CBN News',
+                    'video' => $data[3],
+                    'content' => $data[4],
+                    'artImg' => $data[5],
                     'website' => 'news.abs-cbn.com',
                 ];
             }
@@ -235,12 +248,19 @@ class DefaultController extends AbstractController
                 $datetime = preg_replace('/\/\D.*$/', '', $datetime);
                 $datetime = \DateTime::createFromFormat('Y/n/j', $datetime);
 
+                if (preg_match('/LIVE UPDATES/', $data[0])) {
+                    continue;
+                }
+
                 $return[] = [
                     'datetime' => $datetime ? $datetime->format('F j Y') : null,
                     'title' => $data[0],
                     'href' => $data[1],
                     'img' => 'images/cnn.png',
                     'name' => 'CNN Philippines',
+                    'video' => $data[2],
+                    'content' => $data[3],
+                    'artImg' => $data[4],
                     'website' => 'cnnphilippines.com',
                 ];
             }
@@ -272,6 +292,9 @@ class DefaultController extends AbstractController
                     'href' => $data[2],
                     'img' => 'images/tv5.png',
                     'name' => 'tv5 News5',
+                    'video' => '',
+                    'content' => $data[4],
+                    'artImg' => '',
                     'website' => 'news.tv5.com.ph',
                 ];
             }
@@ -320,6 +343,7 @@ class DefaultController extends AbstractController
 
         $return = [];
 	$total = 0;
+	    if (isset($json['features'])) {
         foreach ($json['features'] as $data) {
             $att = $data['attributes'];
             $count = $att['value'];
@@ -330,6 +354,7 @@ class DefaultController extends AbstractController
                 'count' => $count
             ];
 	    $total += $count;
+        }
         }
 
 	return [
