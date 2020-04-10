@@ -6,16 +6,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, SessionInterface $session)
     {
         $newsId = $request->query->get('news');
-        $newsId = $newsId ? $newsId : 0;
+
+        if ($newsId) {
+            $newsId = $newsId;
+        }
+        else {
+            $newsId = $session->get('page');
+
+            if (!$newsId) {
+                $newsId = 0;
+            }
+        }
+
         $abs = $this->absNews();
         $cnn = $this->cnnNews();
         $sunstar = $this->sunstarNews();
@@ -144,6 +157,8 @@ class DefaultController extends AbstractController
         if ($newsId > (count($all_news) - 1)) {
             $newsId = 0;
         }
+
+        $session->set('page', $newsId);
 
         return $this->render('base.html.twig',[
             'news' => isset($all_news[$newsId]) ? $all_news[$newsId] : null,
