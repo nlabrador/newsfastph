@@ -189,7 +189,7 @@
                 </div>
               </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-8 tophere">
           <div class="row">
 
             <h2 class="text-black">Focusing on COVID-19 News Update</h2>
@@ -199,39 +199,42 @@
           </div>
         {% if news %}   
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" id="article-div">
             <div class="author-box" data-aos="fade-left">
               <div class="d-flex mb-4">
                 <div class="mr-3">
-                  <img src="{{ news.img }}" alt="Image" class="img-fluid rounded-circle">
+                  <img id="newsimg" src="{{ news.img }}" alt="Image" class="img-fluid rounded-circle">
                 </div>
                 <div class="mr-auto text-black">
-                  <strong class="font-weight-bold mb-0">{{ news.name }}</strong>
-                  <i><small>&nbsp; {{ news.datetime }}</small></i>
+                  <strong id="newsname" class="font-weight-bold mb-0">{{ news.name }}</strong>
+                  <i><small id="newsdate">&nbsp; {{ news.datetime }}</small></i>
                   <br>
-                  {{ news.website }}
+                  <span id="newsweb">{{ news.website }}</span>
                 </div>
               </div>
               <blockquote>
-                <a href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
+                <a id="newshref" href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
+                <div id="newsimgvid">
                 {% if news.video %}
-                    <br>
                     <br>
                     <iframe src="{{ news.video }}" width="100%" height="350"></iframe>
                 {% endif %}
                 {% if news.artImg %}
                     <br>
-                    <br>
                     <img class="img-fluid" alt="Image" src="{{ news.artImg }}" style="max-width:100%;">
-                    <br>
                 {% endif %}
+                </div>
+                <div id="newscontent">
                 {{ news.content|raw }}
+                </div>
               </blockquote>
-              <div class="d-flex mb-4">
+              <div class="d-flex mb-4 move-buttons">
                 {% if id > 0 %}
-                    <a href="/?news={{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
+                    <a href="javascript:void(0)" style="display:block;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
+                {% else %}
+                    <a href="javascript:void(0)" style="display:none;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
                 {% endif %}
-                <a href="/?news={{ id + 1 }}" class="btn btn-info">Next Article</a>
+                <a href="javascript:void(0)" id="next" val={{ id + 1 }} class="btn btn-info">Next Article</a>
               </div>
             </div>
             </div>
@@ -318,6 +321,78 @@
         $('#myTable').DataTable({
             "order": [[ 1, "desc" ]],
             "iDisplayLength": 100
+        });
+
+        $('.move-buttons').on('click', '#next', function() {
+            $('#article-div').hide();
+            index = $(this).attr('val');
+            $(this).attr('val', parseInt(index) + 1);
+            $('#prev').attr('val', parseInt($('#prev').attr('val')) + 1);
+
+            $.get('/get/news/'+index, function( data ){
+                news = data.news;
+                $('#newsimg').attr('src', news.img);
+                $('#newsdate').html('&nbsp;'+news.datetime);
+                $('#newsname').text(news.name);
+                $('#newsweb').text(news.website);
+                $('#newshref').attr('href', news.href);
+                $('#newshref').html(news.title);
+                
+                if (news.video) {
+                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="350"></iframe>');
+                }
+                else if (news.artImg) {
+                    $('#newsimgvid').html('<br><img class="img-fluid" alt="Image" src="'+news.artImg+'" style="max-width:100%;">');
+                }
+                else {
+                    $('#newsimgvid').html('');
+                }
+                
+                $('#newscontent').html(news.content);
+
+                $('#article-div').show();
+                $('#prev').show();
+            
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+            });
+        });
+
+        $('.move-buttons').on('click', '#prev', function() {
+            index = $(this).attr('val');
+            if (parseInt(index) == 0) {
+                $('#prev').hide();
+                $(this).attr('val', 0);
+                $('#next').attr('val', 1);
+            }
+            else {
+                $(this).attr('val', parseInt(index) - 1);
+                $('#next').attr('val', $('#next').attr('val') - 1);
+            }
+
+            $.get('/get/news/'+index, function( data ){
+                news = data.news;
+                $('#newsimg').attr('src', news.img);
+                $('#newsdate').html('&nbsp;'+news.datetime);
+                $('#newsname').text(news.name);
+                $('#newsweb').text(news.website);
+                $('#newshref').attr('href', news.href);
+                $('#newshref').html(news.title);
+                
+                if (news.video) {
+                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="350"></iframe>');
+                }
+                else if (news.artImg) {
+                    $('#newsimgvid').html('<br><img class="img-fluid" alt="Image" src="'+news.artImg+'" style="max-width:100%;">');
+                }
+                else {
+                    $('#newsimgvid').html('');
+                }
+                
+                $('#newscontent').html(news.content);
+
+                $('#article-div').show();
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+            });
         });
     } );
   </script>

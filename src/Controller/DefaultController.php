@@ -22,6 +22,39 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/get/news/{index}", name="getnews")
+     */
+    public function getnewsAction($index, Request $request, SessionInterface $session)
+    {
+        $session->set('page', $index);
+
+        $newsId = $index;
+
+        $latest_date = null;
+        $all_news = [];
+        
+        $return = $this->sunstarNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
+
+        $return = $this->absNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
+
+        $return = $this->cnnNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
+
+        $return = $this->tv5News($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
+
+        $news = $all_news[$index];
+
+        return $this->json(['news' => $news]);
+    }
+
+    /**
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request, SessionInterface $session)
@@ -39,130 +72,26 @@ class DefaultController extends AbstractController
             }
         }
 
-        $abs = $this->absNews();
-        $cnn = $this->cnnNews();
-        $sunstar = $this->sunstarNews();
-        $tv5 = $this->tv5News();
-        $tracker = $this->trackerByLocation();
-
         $latest_date = null;
         $all_news = [];
+        
+        $return = $this->sunstarNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
 
-        foreach ($sunstar as $news) {
-            if (!$latest_date) {
-                $latest_date = $news['datetime'];
+        $return = $this->absNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
 
-                $all_news[] = $news;
-            }
-            else {
-                if ($news['datetime']) {
-                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
-                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+        $return = $this->cnnNews($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
 
-                    if ($datetime > $ldatetime) {
-                        $latest_date = $news['datetime'];
+        $return = $this->tv5News($all_news, $latest_date);
+        $all_news = $return['all_news'];
+        $latest_date = $return['latest_date'];
 
-                        array_unshift($all_news, $news);
-                    }
-                    else {
-                        $all_news[] = $news;
-                    }
-                }
-                else {
-                    $all_news[] = $news;
-                }
-            }
-        }
-        foreach ($tv5 as $news) {
-            if (!$latest_date) {
-                $latest_date = $news['datetime'];
-
-                $all_news[] = $news;
-            }
-            else {
-                if ($news['datetime']) {
-                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
-                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
-
-                    if ($datetime > $ldatetime) {
-                        $latest_date = $news['datetime'];
-
-                        array_unshift($all_news, $news);
-                    }
-                    else {
-                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
-                            array_unshift($all_news, $news);
-                        }
-                        else {
-                            $all_news[] = $news;
-                        }
-                    }
-                }
-                else {
-                    $all_news[] = $news;
-                }
-            }
-        }
-        foreach ($abs as $news) {
-            if (!$latest_date) {
-                $latest_date = $news['datetime'];
-
-                $all_news[] = $news;
-            }
-            else {
-                if ($news['datetime']) {
-                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
-                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
-
-                    if ($datetime > $ldatetime) {
-                        $latest_date = $news['datetime'];
-
-                        array_unshift($all_news, $news);
-                    }
-                    else {
-                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
-                            array_unshift($all_news, $news);
-                        }
-                        else {
-                            $all_news[] = $news;
-                        }
-                    }
-                }
-                else {
-                    $all_news[] = $news;
-                }
-            }
-        }
-        foreach ($cnn as $news) {
-            if (!$latest_date) {
-                $latest_date = $news['datetime'];
-
-                $all_news[] = $news;
-            }
-            else {
-                if ($news['datetime']) {
-                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
-                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
-
-                    if ($datetime > $ldatetime) {
-                        $latest_date = $news['datetime'];
-
-                        array_unshift($all_news, $news);
-                    }
-                    else {
-                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
-                            array_unshift($all_news, $news);
-                        }
-                        else {
-                            $all_news[] = $news;
-                        }
-                    }
-                }
-                else {
-                    $all_news[] = $news;
-                }
-            }
-        }
+        $tracker = $this->trackerByLocation();
 
         if ($newsId > (count($all_news) - 1)) {
             $newsId = 0;
@@ -184,7 +113,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    private function sunstarNews() {
+    private function sunstarNews($all_news, $latest_date) {
         if (!file_exists($this->getFileDir().'sunstar.csv')) {
             return [];
         }
@@ -212,10 +141,39 @@ class DefaultController extends AbstractController
             }
         }
 
-        return $return;
+        foreach ($return as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        $all_news[] = $news;
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+
+        return [
+            'all_news' => $all_news,
+            'latest_date' => $latest_date
+        ];
     }
 
-    private function absNews() {
+    private function absNews($all_news, $latest_date) {
         if (!file_exists($this->getFileDir().'abs.csv')) {
             return [];
         }
@@ -249,10 +207,44 @@ class DefaultController extends AbstractController
             }
         }
 
-        return $return;
+        foreach ($return as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+
+        return [
+            'all_news' => $all_news,
+            'latest_date' => $latest_date
+        ];
     }
 
-    private function cnnNews() {
+    private function cnnNews($all_news, $latest_date) {
         if (!file_exists($this->getFileDir().'cnn.csv')) {
             return [];
         }
@@ -291,10 +283,44 @@ class DefaultController extends AbstractController
             }
         }
 
-        return $return;
+        foreach ($return as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+
+        return [
+            'all_news' => $all_news,
+            'latest_date' => $latest_date
+        ];
     }
 
-    private function tv5News() {
+    private function tv5News($all_news, $latest_date) {
         if (!file_exists($this->getFileDir().'news5.csv')) {
             return [];
         }
@@ -325,7 +351,41 @@ class DefaultController extends AbstractController
             }
         }
 
-        return $return;
+        foreach ($return as $news) {
+            if (!$latest_date) {
+                $latest_date = $news['datetime'];
+
+                $all_news[] = $news;
+            }
+            else {
+                if ($news['datetime']) {
+                    $ldatetime = \DateTime::createFromFormat('F j Y', $latest_date); 
+                    $datetime = \DateTime::createFromFormat('F j Y', $news['datetime']);
+
+                    if ($datetime > $ldatetime) {
+                        $latest_date = $news['datetime'];
+
+                        array_unshift($all_news, $news);
+                    }
+                    else {
+                        if ($datetime->format('F j Y') == $ldatetime->format('F j Y')) {
+                            array_unshift($all_news, $news);
+                        }
+                        else {
+                            $all_news[] = $news;
+                        }
+                    }
+                }
+                else {
+                    $all_news[] = $news;
+                }
+            }
+        }
+
+        return [
+            'all_news' => $all_news,
+            'latest_date' => $latest_date
+        ];
     }
 
     private function dohUpdate() {
