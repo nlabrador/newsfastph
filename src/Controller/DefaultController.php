@@ -12,6 +12,16 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class DefaultController extends AbstractController
 {
     /**
+     * @Route("/refresh", name="refresh")
+     */
+    public function refreshAction(Request $request, SessionInterface $session)
+    {
+        $session->set('page', 0);
+
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request, SessionInterface $session)
