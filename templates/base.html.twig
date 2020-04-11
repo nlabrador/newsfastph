@@ -235,6 +235,7 @@
                     <a href="javascript:void(0)" style="display:none;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
                 {% endif %}
                 <a href="javascript:void(0)" id="next" val={{ id + 1 }} class="btn btn-info">Next Article</a>
+                <a href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
               </div>
             </div>
             </div>
@@ -349,6 +350,7 @@
                 }
                 
                 $('#newscontent').html(news.content);
+                $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
 
                 $('#article-div').show();
                 $('#prev').show();
@@ -389,6 +391,8 @@
                 }
                 
                 $('#newscontent').html(news.content);
+
+                $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
 
                 $('#article-div').show();
                 $("html, body").animate({ scrollTop: 0 }, "slow");
