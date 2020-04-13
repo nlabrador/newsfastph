@@ -103,43 +103,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        COVID-19 Update from <a href="https://ncovtracker.doh.gov.ph/" target="_blank">Department of Health COVID-19 Tracker</a><br>
-                    </div>
-                    <div class="col-md-12">
-                        <table class="table" style="font-size:20px;width:100%">
-                            <tbody>
-                                <tr>
-                                    <td><strong class="text-warning">Confirmed</strong></td>
-                                    <td>
-                                        <h4><span class="badge badge-pill badge-warning" style="color:#fff;">{{ confirmed }}</span></h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="text-primary">PUIs</strong></td>
-                                    <td>
-                                        <h4><span class="badge badge-pill badge-primary">{{ puis }}</span></h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="text-info">PUMs</strong></td>
-                                    <td>
-                                        <h4><span class="badge badge-pill badge-info">{{ pums }}</span></h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="text-success">Recovered</strong></td>
-                                    <td>
-                                        <h4><span class="badge badge-pill badge-success">{{ recovered }}</span></h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong class="text-danger">Deaths</strong></td>
-                                    <td>
-                                        <h4><span class="badge badge-pill badge-danger">{{ deaths }}</span></h4>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <a href="#iframetracker" id="tracker">View Department of Health COVID-19 Tracker</a><br>
                     </div>
                     {% if doh.image %}
                     {% else %}
@@ -235,7 +199,7 @@
                     <a href="javascript:void(0)" style="display:none;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
                 {% endif %}
                 <a href="javascript:void(0)" id="next" val={{ id + 1 }} class="btn btn-info">Next Article</a>
-                <a href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
+                <a style="display:none;" href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
               </div>
             </div>
             </div>
@@ -245,36 +209,10 @@
 
           </div>
         </div>
-        <div class="row">
-                    <div class="col-md-12">
+        <div class="row" id="iframetracker">
+                    <div class="col-md-12 text-center">
                         <br>
-			            <strong style="color:#000">Total Confirmed COVID-19 Cases By Residency: {{ total }}</strong><br>
-                        <table id="myTable" class="table" style="font-size:15px;width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Residency</th>
-                                    <th>Confirmed Cases</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for track in tracker %}
-                                    <tr>
-                                        <td>{{ track.residence }}</td>
-                                        <td>
-                                            {% if track.residence == 'For validation' %}
-                                                <span class="badge badge-pill badge-info">{{ track.count }}</span>
-                                            {% else %}
-                                                {% if track.count > 5 %}
-                                                    <span class="badge badge-pill badge-danger">{{ track.count }}</span>
-                                                {% else %}
-                                                    <span class="badge badge-pill badge-warning">{{ track.count }}</span>
-                                                {% endif %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <iframe style="border: none;" width="85%" height="2150px" src="https://public.tableau.com/views/COVID-19CasesandDeathsinthePhilippines_15866705872710/Home?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Fpublic.tableau.com%2F&:embed_code_version=3&:tabs=no&:toolbar=yes&:animate_transition=yes&:display_static_image=no&:display_spinner=no&:display_overlay=yes&:display_count=yes&publish=yes&:loadOrderID=0"></iframe>
                     </div>
             </div>
       </div>
@@ -351,6 +289,7 @@
                 
                 $('#newscontent').html(news.content);
                 $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
+                $('#share').show();
 
                 $('#article-div').show();
                 $('#prev').show();
@@ -393,6 +332,7 @@
                 $('#newscontent').html(news.content);
 
                 $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
+                $('#share').show();
 
                 $('#article-div').show();
                 $("html, body").animate({ scrollTop: 0 }, "slow");
