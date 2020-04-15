@@ -134,7 +134,7 @@ class DefaultController extends AbstractController
                     'img' => 'images/sunstar.png',
                     'name' => 'Sunstar Philippines',
                     'video' => '',
-                    'content' => $data[4],
+                    'content' => substr($data[4], 0, 500) . '...',
                     'artImg' => $data[5],
                     'website' => 'www.sunstar.com.ph',
                 ];
@@ -200,7 +200,7 @@ class DefaultController extends AbstractController
                     'img' => 'images/abs.jpg',
                     'name' => 'ABS-CBN News',
                     'video' => $data[3],
-                    'content' => $data[4],
+                    'content' => substr($data[4], 0, 500) . '...',
                     'artImg' => $data[5],
                     'website' => 'news.abs-cbn.com',
                 ];
@@ -276,7 +276,7 @@ class DefaultController extends AbstractController
                     'img' => 'images/cnn.png',
                     'name' => 'CNN Philippines',
                     'video' => $data[2],
-                    'content' => $data[3],
+                    'content' => substr($data[3], 0, 500) . '...',
                     'artImg' => $data[4],
                     'website' => 'cnnphilippines.com',
                 ];
@@ -344,7 +344,7 @@ class DefaultController extends AbstractController
                     'img' => 'images/tv5.png',
                     'name' => 'tv5 News5',
                     'video' => '',
-                    'content' => $data[4],
+                    'content' => substr($data[4], 0, 500) . '...',
                     'artImg' => '',
                     'website' => 'news.tv5.com.ph',
                 ];

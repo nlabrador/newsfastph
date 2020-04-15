@@ -96,74 +96,18 @@
           <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
             <div class="row" data-aos="fade-up" data-aos-delay="200">
               <div class="col-lg-4">
-                <h1>Latest and Top News in the Philippines</h1>
-                <p class="mb-5">
-                    All news from legitimate media sources such as Sunstar Philippines, ABS-CBN News, tv5 News5, and CNN Philippines.
-                </p>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <a href="#iframetracker" id="tracker">View Department of Health COVID-19 Tracker</a><br>
-                    </div>
-                    {% if doh.image %}
-                    {% else %}
-                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
-                        <br>
-                        <br>
-                        <div class="unit-4 d-block">
-                            <div>
-                                <a href="https://www.doh.gov.ph" target="_blank">
-                                <h3>{{ doh.confirmed }}</h3>
-                                <p>
-                                    Confirmed cases
-                                </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
-                        <div class="unit-4 d-block">
-                            <div>
-                                <a href="https://www.doh.gov.ph" target="_blank">
-                                <h3>{{ doh.negative }}</h3>
-                                <p>
-                                    Tested negative
-                                </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4 mb-4 mb-lg-4 aos-init aos-animate" data-aos="fade-up">
-                        <div class="unit-4 d-block">
-                            <div>
-                                <a href="https://www.doh.gov.ph" target="_blank">
-                                <h3>{{ doh.pending }}</h3>
-                                <p>
-                                    Pending result
-                                </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
-
-                </div>
-                <div>
-                </div>
-              </div>
-
-        <div class="col-lg-8 tophere">
           <div class="row">
 
-            <h2 class="text-black">Focusing on COVID-19 News Update</h2>
-            <p class="mb-4">
+            <h2 class="text-black">Latest and Top News in the Philippines</h2>
+                <p class="mb-3">
+                All news from legitimate media sources such as Sunstar Philippines, ABS-CBN News, tv5 News5, &nbsp;and CNN Philippines.
+                <br>
                 We filtered our feed to only gather COVID-19 releated latest news and updates in the country.
             </p>
           </div>
         {% if news %}   
         <div class="row">
-            <div class="col-md-12" id="article-div">
+            <div style="padding-left:0px !important;" class="col-md-12" id="article-div">
             <div class="author-box" data-aos="fade-left">
               <div class="d-flex mb-4">
                 <div class="mr-3">
@@ -181,7 +125,7 @@
                 <div id="newsimgvid">
                 {% if news.video %}
                     <br>
-                    <iframe src="{{ news.video }}" width="100%" height="350"></iframe>
+                    <iframe src="{{ news.video }}" width="100%" height="250"></iframe>
                 {% endif %}
                 {% if news.artImg %}
                     <br>
@@ -190,16 +134,18 @@
                 </div>
                 <div id="newscontent">
                 {{ news.content|raw }}
+                <br>
+                <a target="_blank" href="{{ news.href }}">Read more</a>
                 </div>
               </blockquote>
               <div class="d-flex mb-4 move-buttons">
                 {% if id > 0 %}
-                    <a href="javascript:void(0)" style="display:block;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
+                    <a href="javascript:void(0)" style="display:block;font-size:12px;padding:10px;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
                 {% else %}
-                    <a href="javascript:void(0)" style="display:none;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
+                    <a href="javascript:void(0)" style="display:none;font-size:12px;padding:10px" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
                 {% endif %}
-                <a href="javascript:void(0)" id="next" val={{ id + 1 }} class="btn btn-info">Next Article</a>
-                <a style="display:none;" href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
+                <a href="javascript:void(0)" id="next" val={{ id + 1 }} style="font-size:12px;padding:10px;" class="btn btn-info">Next Article</a>
+                <a style="display:none;font-size:12px;padding:10px" href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
               </div>
             </div>
             </div>
@@ -207,15 +153,19 @@
         <br>
         {% endif %}
 
+                <div>
+                </div>
+              </div>
+
+        <div class="col-lg-8 tophere">
+        <div class="row" id="iframetracker">
+                        <br>
+                    <iframe style="border: none;" width="100%" height="2150px" src="https://public.tableau.com/views/COVID-19CasesandDeathsinthePhilippines_15866705872710/Home?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Fpublic.tableau.com%2F&:embed_code_version=3&:tabs=no&:toolbar=yes&:animate_transition=yes&:display_static_image=no&:display_spinner=no&:display_overlay=yes&:display_count=yes&publish=yes&:loadOrderID=0"></iframe>
+                    </div>
+      </div>
+
           </div>
         </div>
-        <div class="row" id="iframetracker">
-                    <div class="col-md-12 text-center">
-                        <br>
-                    <iframe style="border: none;" width="85%" height="2150px" src="https://public.tableau.com/views/COVID-19CasesandDeathsinthePhilippines_15866705872710/Home?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Fpublic.tableau.com%2F&:embed_code_version=3&:tabs=no&:toolbar=yes&:animate_transition=yes&:display_static_image=no&:display_spinner=no&:display_overlay=yes&:display_count=yes&publish=yes&:loadOrderID=0"></iframe>
-                    </div>
-            </div>
-      </div>
 
     <div class="footer py-5 text-center">
       <div class="container">
@@ -278,7 +228,7 @@
                 $('#newshref').html(news.title);
                 
                 if (news.video) {
-                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="350"></iframe>');
+                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="250"></iframe>');
                 }
                 else if (news.artImg) {
                     $('#newsimgvid').html('<br><img class="img-fluid" alt="Image" src="'+news.artImg+'" style="max-width:100%;">');
@@ -287,7 +237,7 @@
                     $('#newsimgvid').html('');
                 }
                 
-                $('#newscontent').html(news.content);
+                $('#newscontent').html(news.content+'<br><a target="_blank" href="'+ news.href +'">Read more</a>');
                 $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
                 $('#share').show();
 
@@ -320,7 +270,7 @@
                 $('#newshref').html(news.title);
                 
                 if (news.video) {
-                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="350"></iframe>');
+                    $('#newsimgvid').html('<br><iframe src="'+news.video+'" width="100%" height="250"></iframe>');
                 }
                 else if (news.artImg) {
                     $('#newsimgvid').html('<br><img class="img-fluid" alt="Image" src="'+news.artImg+'" style="max-width:100%;">');
@@ -329,7 +279,7 @@
                     $('#newsimgvid').html('');
                 }
                 
-                $('#newscontent').html(news.content);
+                $('#newscontent').html(news.content+'<br><a target="_blank" href="'+ news.href +'">Read more</a>');
 
                 $('#share').attr('href','https://facebook.com/sharer/sharer.php?u='+news.href);
                 $('#share').show();
