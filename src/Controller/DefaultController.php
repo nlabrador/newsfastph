@@ -556,4 +556,12 @@ class DefaultController extends AbstractController
     private function getFileDir() {
 	return '/home/ubuntu/newslab/csvs/';
     }
+
+    /**
+     * @Route("/tracker", name="tracker")
+     */
+    public function trackerAction(Request $request, SessionInterface $session)
+    {
+        return $this->render('tracker.html.twig');
+    }
 }
