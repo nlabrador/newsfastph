@@ -49,9 +49,9 @@ class DefaultController extends AbstractController
         $all_news = $return['all_news'];
         $latest_date = $return['latest_date'];
 
-        $news = $all_news[$index];
+        $news = $all_news;
 
-        return $this->json(['news' => $news]);
+        return $this->json(['allnews' => $news]);
     }
 
     /**
@@ -100,7 +100,7 @@ class DefaultController extends AbstractController
         $session->set('page', $newsId);
 
         return $this->render('base.html.twig',[
-            'news' => isset($all_news[$newsId]) ? $all_news[$newsId] : null,
+            'allnews' => $all_news,
             'id' => $newsId,
             'doh' => $this->dohUpdate(),
 	        'tracker' => $tracker['return'],

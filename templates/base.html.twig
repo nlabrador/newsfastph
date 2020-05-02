@@ -17,21 +17,17 @@
     <link rel="stylesheet" href="fonts/icomoon/style.css">
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-
     <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
 
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
  
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -113,57 +109,51 @@
                 </div>
               </div>
 
-        <div class="col-lg-8 tophere">
-        {% if news %}   
-        <div class="row">
-            <div style="padding-left:0px !important;" class="col-md-12" id="article-div">
-            <div class="author-box" data-aos="fade-left">
-              <div class="d-flex mb-4">
-                <div class="mr-3">
-                  <img id="newsimg" src="{{ news.img }}" alt="Image" class="img-fluid rounded-circle">
+        <div class="col-lg-6 tophere">
+        {% for news in allnews %}   
+            <div class="row">
+                <div style="padding-left:0px !important;" class="col-md-12" id="article-div">
+                    <div class="author-box" data-aos="fade-left">
+                        <div class="d-flex mb-4">
+                            <div class="mr-3">
+                                <img id="newsimg" src="{{ news.img }}" alt="Image" class="img-fluid rounded-circle">
+                            </div>
+                            <div class="mr-auto text-black">
+                                <strong id="newsname" class="font-weight-bold mb-0">{{ news.name }}</strong>
+                                <i><small id="newsdate">&nbsp; {{ news.datetime }}</small></i>
+                                <br>
+                                <span id="newsweb">{{ news.website }}</span>
+                            </div>
+                        </div>
+                        <blockquote style="font-size:15px !important;font-style:normal !important;">
+                            <a id="newshref" href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
+                            <div id="newscontent">
+                                {{ news.content|raw }}
+                            </div>
+                            <div id="newsimgvid" style="text-align:center;">
+                                {% if news.video %}
+                                    <br>
+                                    <iframe src="{{ news.video }}" width="100%" height="250"></iframe>
+                                {% endif %}
+                                {% if news.artImg %}
+                                    <br>
+                                    <img class="img-fluid" alt="Image" src="{{ news.artImg }}" style="max-width:100%;">
+                                {% endif %}
+                            </div>
+                        </blockquote>
+                    </div>
                 </div>
-                <div class="mr-auto text-black">
-                  <strong id="newsname" class="font-weight-bold mb-0">{{ news.name }}</strong>
-                  <i><small id="newsdate">&nbsp; {{ news.datetime }}</small></i>
-                  <br>
-                  <span id="newsweb">{{ news.website }}</span>
-                </div>
-              </div>
-              <blockquote>
-                <a id="newshref" href="{{ news.href }}" target="_blank">{{ news.title|raw }}</a>
-                <div id="newsimgvid" style="text-align:center;">
-                {% if news.video %}
-                    <br>
-                    <iframe src="{{ news.video }}" width="100%" height="250"></iframe>
-                {% endif %}
-                {% if news.artImg %}
-                    <br>
-                    <img class="img-fluid" alt="Image" src="{{ news.artImg }}" style="max-width:70%;">
-                {% endif %}
-                </div>
-                <div id="newscontent">
-                {{ news.content|raw }}
-                <br>
-                <a target="_blank" href="{{ news.href }}">Read more</a>
-                </div>
-              </blockquote>
-              <div class="d-flex mb-4 move-buttons">
-                {% if id > 0 %}
-                    <a href="javascript:void(0)" style="display:block;font-size:12px;padding:10px;" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
-                {% else %}
-                    <a href="javascript:void(0)" style="display:none;font-size:12px;padding:10px" id="prev" val="{{ id - 1 }}" class="btn btn-secondary">Prev Article</a>
-                {% endif %}
-                &nbsp;
-                <a href="javascript:void(0)" id="next" val={{ id + 1 }} style="font-size:12px;padding:10px;" class="btn btn-info">Next Article</a>
-                &nbsp;
-                <a style="display:none;font-size:12px;padding:10px" href="https://facebook.com/sharer/sharer.php?={{ news.href }}" class="btn btn-primary" id="share" target="_blank">Share on Facebook</a>
-              </div>
             </div>
-            </div>
-        </div>
-        <br>
-        {% endif %}
+            <br>
+        {% endfor %}
       </div>
+        <div class="col-lg-2">
+            <a href="https://twitter.com/i/events/1240294719365636097" target="_blank"><small>COVID Updates on Twitter</small></a>
+            <br>
+            <a href="https://www.facebook.com/coronavirus_info/?page_source=bookmark" target="_blank"><small>COVID Info on Facebook</small></a>
+            <br>
+            <a href="https://www.facebook.com/coronavirus_info/?page_source=bookmark" target="_blank"><small>COVID Resource on Google</small></a>
+        </div>
 
           </div>
         </div>
